@@ -23,8 +23,10 @@
           <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="/features.html">Features</a></li>
           <li class="nav-item"><a class="nav-link" href="/upload.html">Upload</a></li>
-          <li class="nav-item"><a class="nav-link" href="/sign-in.html">Sign In</a></li>
-          <li class="nav-item"><a class="btn btn-sm btn-accent ms-2 btn-nav" href="/sign-up.html">Sign Up</a></li>
+          <li class="nav-item" id="nav-signin"><a class="nav-link" href="/sign-in.html">Sign In</a></li>
+          <li class="nav-item" id="nav-signup"><a class="btn btn-sm btn-accent ms-2 btn-nav" href="/sign-up.html">Sign Up</a></li>
+          <li class="nav-item d-none" id="nav-user"></li>
+          <li class="nav-item d-none" id="nav-signout"><a class="nav-link" href="#" id="sign-out-link">Sign Out</a></li>
         </ul>
       </div>
     </div>
@@ -89,6 +91,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script async crossorigin src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+  <script src="/auth.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>
