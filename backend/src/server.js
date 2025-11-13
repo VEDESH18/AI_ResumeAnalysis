@@ -45,9 +45,15 @@ app.use(cors({
 app.use(express.json());
 
 // Clerk auth (optional; enabled when keys are present)
-const hasClerk = Boolean(process.env.CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY);
+const publishableKey = process.env.CLERK_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const hasClerk = Boolean(publishableKey && process.env.CLERK_SECRET_KEY);
 if (hasClerk) {
-  app.use(clerkMiddleware());
+  app.use(
+    clerkMiddleware({
+      publishableKey,
+      secretKey: process.env.CLERK_SECRET_KEY,
+    })
+  );
 }
 
 // Serve static frontend
@@ -70,7 +76,7 @@ app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 // Public config for frontend (exposes only publishable key)
 app.get('/config/public', (_req, res) => {
   res.json({
-    clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || null,
+    clerkPublishableKey: publishableKey || null,
   });
 });
 
