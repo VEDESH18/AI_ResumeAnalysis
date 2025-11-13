@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
+import { clerkMiddleware, requireAuth } from '@clerk/express';
 
 import { extractTextFromPdf } from './services/pdfExtractor.js';
 import { parseResume } from './services/parser.js';
@@ -43,6 +44,12 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Clerk auth (optional; enabled when keys are present)
+const hasClerk = Boolean(process.env.CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY);
+if (hasClerk) {
+  app.use(clerkMiddleware());
+}
+
 // Serve static frontend
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,12 +67,22 @@ try {
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
+// Public config for frontend (exposes only publishable key)
+app.get('/config/public', (_req, res) => {
+  res.json({
+    clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || null,
+  });
+});
+
 // Serve index.html on root for convenience
 app.get('/', (_req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-app.post('/analyze', upload.single('file'), async (req, res) => {
+const analyzeMiddlewares = [];
+if (hasClerk) analyzeMiddlewares.push(requireAuth());
+analyzeMiddlewares.push(upload.single('file'));
+app.post('/analyze', analyzeMiddlewares, async (req, res) => {
   try {
     const file = req.file;
     const jobDescription = req.body.job_description || '';
