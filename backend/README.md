@@ -32,22 +32,24 @@ Returns JSON with:
 ```
 cd "e:\ai resume maker\backend"
 npm install
+# Optionally set a port (default 4000 if not set in .env)
+# $env:PORT=4000
 npm run dev
 ```
 
-Open http://localhost:4000 and use the UI (served from `../frontend`).
-Open API docs at http://localhost:4000/docs
+Open `http://localhost:<PORT or 4000>/` to use the UI (served from `../frontend`).
+Open API docs at `http://localhost:<PORT or 4000>/docs`.
 
 ### Test the API quickly
 
 ```
 # Health
-Invoke-WebRequest -UseBasicParsing http://localhost:4000/health | Select-Object -ExpandProperty Content
+Invoke-WebRequest -UseBasicParsing http://localhost:$env:PORT/health | Select-Object -ExpandProperty Content
 
 # Analyze (replace sample.pdf with your path)
 $Form = @{ job_description = "Node.js backend role with Express and REST APIs" }
 $File = Get-Item "C:\path\to\sample.pdf"
-Invoke-WebRequest -UseBasicParsing -Method Post -Uri http://localhost:4000/analyze -Form $Form -InFile $File -ContentType "application/pdf"
+Invoke-WebRequest -UseBasicParsing -Method Post -Uri http://localhost:$env:PORT/analyze -Form $Form -InFile $File -ContentType "application/pdf"
 ```
 
 ## Notes
@@ -56,7 +58,7 @@ Invoke-WebRequest -UseBasicParsing -Method Post -Uri http://localhost:4000/analy
 - NLP/scoring is rule-based and deterministic; you can plug in LLMs or LanguageTool later.
 - Request logging via pino; errors are centralized.
 - Analysis summaries are stored in a local JSON DB at `backend/data/analyses.json` (via lowdb) by default.
-- If `DATABASE_URL` is set (PostgreSQL), results are persisted to Postgres instead. Use a URL like:
+- If `MONGODB_URI` is set, results are persisted to MongoDB; if `DATABASE_URL` is set (PostgreSQL), results are persisted to Postgres. Use a URL like:
   `postgres://USERNAME:PASSWORD@HOST:5432/DBNAME?sslmode=require`.
 
 ## Deploy (Render)
