@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AI Resume Analyzer API",
+    "version": "0.2.0",
+    "description": "Endpoints for health check and resume analysis."
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "properties": { "status": {"type": "string"} } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analyze": {
+      "post": {
+        "summary": "Analyze a resume PDF",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary" },
+                  "job_description": { "type": "string" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "atsScore": {"type": "integer"},
+                    "keywordMatch": {"type": "integer"},
+                    "subScores": {
+                      "type": "object",
+                      "properties": {
+                        "keywords": {"type": "integer"},
+                        "structure": {"type": "integer"},
+                        "formatting": {"type": "integer"},
+                        "language": {"type": "integer"}
+                      }
+                    },
+                    "sections": {"type": "object", "additionalProperties": {"type": "string"}},
+                    "contacts": {"type": "object", "additionalProperties": {"type": ["string","null"]}},
+                    "skills": {"type": "array", "items": {"type": "string"}},
+                    "keywords": {"type": "array", "items": {"type": "string"}},
+                    "issues": {"type": "array", "items": {"type": "string"}},
+                    "suggestions": {"type": "array", "items": {"type": "string"}},
+                    "formattingTips": {"type": "array", "items": {"type": "string"}}
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "ai-resume-analyzer-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch ./src/server.js",
+    "start": "node ./src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pino": "^9.4.0",
+    "pino-http": "^10.3.0",
+    "pino-pretty": "^11.2.2",
+    "multer": "^2.0.0",
+    "pdf-parse": "^1.1.1",
+    "lowdb": "^7.0.1",
+    "mongodb": "^6.10.0",
+    "pg": "^8.13.1",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
