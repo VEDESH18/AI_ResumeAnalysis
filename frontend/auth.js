@@ -60,6 +60,45 @@
     try {
       const url = new URL(window.location.href);
       const redirectUrl = url.searchParams.get('redirect_url') || '/';
+      const btnGoogle = document.getElementById('btn-google');
+      if (btnGoogle && Clerk) {
+        btnGoogle.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            // Trigger Google OAuth directly
+            await Clerk.signIn.authenticateWithRedirect({
+              strategy: 'oauth_google',
+              redirectUrl: window.location.pathname,
+              redirectUrlComplete: redirectUrl,
+            });
+          } catch (err) {
+            console.error('Google OAuth start failed:', err);
+          }
+        });
+      }
+      const btnGoogleUp = document.getElementById('btn-google-up');
+      if (btnGoogleUp && Clerk) {
+        btnGoogleUp.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            if (Clerk.signUp && Clerk.signUp.authenticateWithRedirect) {
+              await Clerk.signUp.authenticateWithRedirect({
+                strategy: 'oauth_google',
+                redirectUrl: window.location.pathname,
+                redirectUrlComplete: redirectUrl,
+              });
+            } else {
+              await Clerk.signIn.authenticateWithRedirect({
+                strategy: 'oauth_google',
+                redirectUrl: window.location.pathname,
+                redirectUrlComplete: redirectUrl,
+              });
+            }
+          } catch (err) {
+            console.error('Google OAuth start failed:', err);
+          }
+        });
+      }
       const signInEl = document.getElementById('sign-in');
       if (signInEl && Clerk && Clerk.mountSignIn) Clerk.mountSignIn(signInEl, { redirectUrl });
       const signUpEl = document.getElementById('sign-up');
