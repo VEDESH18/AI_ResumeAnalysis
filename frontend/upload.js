@@ -22,9 +22,39 @@ document.getElementById('fill-demo').addEventListener('click', () => {
   jdInput.value = `We are seeking a Senior Software Engineer experienced with Node.js, Express, REST APIs, and cloud deployments. The ideal candidate has built scalable services, optimized performance, and collaborated cross-functionally. Experience with CI/CD, Docker, monitoring, and metrics is a plus. Strong communication and ownership are required.`;
 });
 
+async function requireAuthIfEnabled() {
+  try {
+    const res = await fetch('/config/public');
+    const cfg = await res.json();
+    const key = cfg?.clerkPublishableKey;
+    if (!key) return true; // auth disabled
+    // Wait for Clerk script
+    let tries = 0;
+    while (!window.Clerk && tries < 20) {
+      await new Promise(r => setTimeout(r, 100));
+      tries++;
+    }
+    if (!window.Clerk) return true; // fail-open
+    await window.Clerk.load({ publishableKey: key });
+    // If not signed in, redirect to sign-in
+    const isSignedIn = !!window.Clerk.user || !!window.Clerk.session || window.Clerk.isSignedIn;
+    if (!isSignedIn) {
+      const redirect = `/sign-in.html?redirect_url=${encodeURIComponent(location.pathname)}`;
+      window.location.href = redirect;
+      return false;
+    }
+    return true;
+  } catch {
+    return true; // fail-open if config not reachable
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   formAlert.classList.add('d-none');
+  // Gate with auth if enabled
+  const ok = await requireAuthIfEnabled();
+  if (!ok) return;
   const file = fileInput.files[0];
   if (!file) return showError('Please choose a PDF file.');
   if (file.type !== 'application/pdf') return showError('Only PDF files are supported.');
