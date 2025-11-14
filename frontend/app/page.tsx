@@ -2,55 +2,314 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Hero Section */}
-      <section className="px-4 py-20 max-w-5xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 text-gray-900">
-          AI Resume Analyzer
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Get instant ATS scoring, keyword optimization, and actionable
-          suggestions to land more interviews.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Link href="/upload">
-            <button className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">
-              Analyze Your Resume
-            </button>
-          </Link>
-          <Link href="/features">
-            <button className="px-8 py-3 bg-white text-purple-600 border-2 border-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition">
-              Learn More
-            </button>
-          </Link>
+    <>
+      <section className="hero">
+        <div className="container">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2rem",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <span className="chip">ATS-Powered • HR-Grade Insights</span>
+              <h1
+                className="display-5"
+                style={{ marginTop: "1rem", marginBottom: "1rem" }}
+              >
+                AI-Powered Resume Analyzer
+              </h1>
+              <p className="lead">
+                Upload your resume and get instant ATS scoring, formatting
+                feedback, and personalized improvement suggestions.
+              </p>
+              <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+                <Link href="/upload" className="btn btn-accent btn-lg">
+                  <i
+                    className="bi bi-upload"
+                    style={{ marginRight: "0.5rem" }}
+                  ></i>
+                  Upload Resume (PDF)
+                </Link>
+                <Link href="/features" className="btn btn-outline-light btn-lg">
+                  <i
+                    className="bi bi-eye"
+                    style={{ marginRight: "0.5rem" }}
+                  ></i>
+                  Explore Features
+                </Link>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  marginTop: "1.5rem",
+                  flexDirection: "column",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span className="icon-circle" style={{ marginBottom: 0 }}>
+                    <i
+                      className="bi bi-graph-up"
+                      style={{ color: "var(--accent)" }}
+                    ></i>
+                  </span>
+                  <small>Instant ATS Score</small>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span className="icon-circle" style={{ marginBottom: 0 }}>
+                    <i
+                      className="bi bi-magic"
+                      style={{ color: "var(--accent)" }}
+                    ></i>
+                  </span>
+                  <small>Smart Suggestions</small>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span className="icon-circle" style={{ marginBottom: 0 }}>
+                    <i
+                      className="bi bi-check2-circle"
+                      style={{ color: "var(--accent)" }}
+                    ></i>
+                  </span>
+                  <small>ATS Friendly</small>
+                </div>
+              </div>
+            </div>
+            <div className="gradient-border">
+              <div className="mock-score">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <h5 style={{ margin: 0 }}>ATS Score</h5>
+                  <span
+                    style={{
+                      background: "#e5e7eb",
+                      color: "#0f172a",
+                      padding: "0.25rem 0.75rem",
+                      borderRadius: "999px",
+                      fontSize: "0.75rem",
+                    }}
+                  >
+                    Demo
+                  </span>
+                </div>
+                <div
+                  className="display-5"
+                  style={{ color: "var(--accent)", marginBottom: "0.5rem" }}
+                >
+                  78/100
+                </div>
+                <div className="text-secondary">Keyword Match: 62%</div>
+                <div
+                  style={{
+                    marginTop: "1rem",
+                    height: "10px",
+                    background: "var(--card-bg)",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "62%",
+                      height: "100%",
+                      background: "var(--accent-2)",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "0.5rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <div>
+                    <small>Keywords</small>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "var(--card-bg)",
+                        borderRadius: "4px",
+                        marginTop: "0.25rem",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "72%",
+                          height: "100%",
+                          background: "#10b981",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <small>Structure</small>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "var(--card-bg)",
+                        borderRadius: "4px",
+                        marginTop: "0.25rem",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "70%",
+                          height: "100%",
+                          background: "#3b82f6",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <small>Formatting</small>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "var(--card-bg)",
+                        borderRadius: "4px",
+                        marginTop: "0.25rem",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "68%",
+                          height: "100%",
+                          background: "#eab308",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <small>Language</small>
+                    <div
+                      style={{
+                        height: "6px",
+                        background: "var(--card-bg)",
+                        borderRadius: "4px",
+                        marginTop: "0.25rem",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "60%",
+                          height: "100%",
+                          background: "#ef4444",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Features Preview */}
-      <section className="px-4 py-16 max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-xl font-semibold mb-4">ATS Scoring</h3>
-            <p className="text-gray-600">
-              Get a comprehensive ATS score based on formatting, keywords, and
-              structure.
-            </p>
-          </div>
-          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-xl font-semibold mb-4">Keyword Match</h3>
-            <p className="text-gray-600">
-              See how your resume aligns with job descriptions and industry
-              standards.
-            </p>
-          </div>
-          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-xl font-semibold mb-4">Suggestions</h3>
-            <p className="text-gray-600">
-              Receive actionable recommendations to improve your resume.
-            </p>
+      <section className="section">
+        <div className="container">
+          <h2>How It Works</h2>
+          <p className="text-secondary">
+            A simple, transparent ATS analysis pipeline.
+          </p>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "1.5rem",
+              marginTop: "1rem",
+            }}
+          >
+            <div className="card-soft">
+              <div className="icon-circle" style={{ marginBottom: "1rem" }}>
+                <i
+                  className="bi bi-upload"
+                  style={{ color: "var(--accent)", fontSize: "1.5rem" }}
+                ></i>
+              </div>
+              <h5>Upload Resume (PDF)</h5>
+              <p className="text-secondary" style={{ marginBottom: 0 }}>
+                Securely upload your PDF resume. We extract text with high
+                fidelity.
+              </p>
+            </div>
+            <div className="card-soft">
+              <div className="icon-circle" style={{ marginBottom: "1rem" }}>
+                <i
+                  className="bi bi-cpu"
+                  style={{ color: "var(--accent)", fontSize: "1.5rem" }}
+                ></i>
+              </div>
+              <h5>NLP Parsing</h5>
+              <p className="text-secondary" style={{ marginBottom: 0 }}>
+                Experience, Skills, Projects, Education – structured with
+                rule-based NLP.
+              </p>
+            </div>
+            <div className="card-soft">
+              <div className="icon-circle" style={{ marginBottom: "1rem" }}>
+                <i
+                  className="bi bi-graph-up-arrow"
+                  style={{ color: "var(--accent)", fontSize: "1.5rem" }}
+                ></i>
+              </div>
+              <h5>ATS Scoring</h5>
+              <p className="text-secondary" style={{ marginBottom: 0 }}>
+                We grade keywords, structure, formatting, and language quality.
+              </p>
+            </div>
           </div>
         </div>
       </section>
-    </main>
+
+      <section className="section">
+        <div className="container">
+          <div className="card-soft" style={{ textAlign: "center" }}>
+            <h3 style={{ marginBottom: "1rem" }}>
+              Ready to transform your resume?
+            </h3>
+            <Link href="/upload" className="btn btn-accent btn-lg">
+              <i
+                className="bi bi-cloud-arrow-up"
+                style={{ marginRight: "0.5rem" }}
+              ></i>
+              Upload Resume Now
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

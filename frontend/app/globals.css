@@ -1,26 +1,240 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #111827 100%);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --accent: #7c3aed;
+  --accent-2: #22d3ee;
+  --accent-3: #f472b6;
+  --background: #0f172a;
+  --foreground: #e5e7eb;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue',
+    Arial;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #e5e7eb;
   }
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
 body {
-  background: var(--background);
+  background: var(--bg-grad);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans';
+}
+
+header {
+  backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.brand-grad {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-accent {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn-accent:hover {
+  opacity: 0.9;
+  color: white;
+}
+
+.card-soft {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.chip {
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: inline-block;
+  font-size: 0.875rem;
+}
+
+.hero {
+  padding: 100px 0 60px;
+}
+
+.mock-score {
+  background: radial-gradient(120px 120px at 70% 30%, rgba(124, 58, 237, 0.4),
+      transparent 60%),
+    var(--card-bg);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 18px;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.6),
+    rgba(34, 211, 238, 0.6)
+  );
+  filter: blur(12px);
+}
+
+.section {
+  padding: 60px 0;
+}
+
+.progress {
+  height: 10px;
+}
+
+footer {
+  border-top: 1px solid var(--card-border);
+  padding: 40px 0;
+  margin-top: auto;
+}
+
+footer a {
+  color: #c7d2fe;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #e9d5ff;
+}
+
+.icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.35);
+}
+
+main {
+  min-height: 60vh;
+}
+
+.active-link {
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline-light {
+  border: 1px solid #e5e7eb;
+  color: #e5e7eb;
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.display-5 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.lead {
+  font-size: 1.125rem;
+  color: #a1a5b0;
+}
+
+.text-secondary {
+  color: #a1a5b0;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 600;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
