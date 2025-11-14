@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 interface AnalysisResult {
   atsScore: number;
@@ -19,7 +19,6 @@ interface AnalysisResult {
 
 export default function Upload() {
   const { user, isLoaded } = useUser();
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +26,6 @@ export default function Upload() {
   const [error, setError] = useState("");
 
   if (!isLoaded) return <div className="p-8">Loading...</div>;
-  if (!user) return router.push("/sign-in");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -69,6 +67,35 @@ export default function Upload() {
       setLoading(false);
     }
   };
+
+  if (!user) {
+    return (
+      <main className="min-h-screen bg-white py-12">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center py-20">
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">
+              Sign in to Analyze
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">
+              Create an account or sign in to upload and analyze your resume.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <SignInButton mode="modal">
+                <button className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button className="px-8 py-3 bg-white text-purple-600 border-2 border-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white py-12">
