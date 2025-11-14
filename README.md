@@ -1,77 +1,134 @@
 # AI Resume Analyzer
 
-An intelligent ATS-style resume analyzer. Upload a PDF, optionally include a job description, and get a score, keyword coverage, issues, suggestions, and formatting tips.
+An intelligent ATS-style resume analyzer powered by AI. Upload a PDF, optionally include a job description, and get a score, keyword coverage, issues, suggestions, and formatting tips.
 
 ## Project Structure
 
 ```
-backend/                # Node.js + Express API (serves frontend too)
+backend/                # Node.js + Express API
   src/
-    services/           # pdfExtractor, parser, scoring, suggestions, utils
+    services/           # pdfExtractor, parser, scoring, suggestions, db, logger
     server.js
   openapi.json          # Swagger spec (served at /docs)
   package.json
   README.md
-frontend/               # Static HTML + Bootstrap UI
-  index.html
-  features.html
-  upload.html
-  contact.html
-  styles.css
-  app.js
-  upload.js
+
+frontend/               # Next.js 14 + Clerk Auth + Tailwind CSS
+  app/
+    (root, features, upload, contact pages)
+    layout.tsx          # ClerkProvider + navbar with auth
+  middleware.ts         # Clerk auth middleware
+  package.json
 ```
 
-## Run (Windows PowerShell)
+## Quick Start
 
-```
-cd "e:\ai resume maker\backend"
+### Backend (Express + MongoDB/Postgres/JSON)
+
+```powershell
+cd backend
 npm install
-# Optionally set a port (default 4000 if not set in .env)
-# $env:PORT=4000
-npm run dev
+# Set env vars in .env (see backend/.env.example)
+npm run start
+# Server runs on http://localhost:4001 (default)
 ```
 
-- Open `http://localhost:<PORT or 4000>/` for the UI
-- API docs at `http://localhost:<PORT or 4000>/docs`
+### Frontend (Next.js)
+
+```powershell
+cd frontend
+npm install
+# Set env vars in .env.local (Clerk keys + backend URL)
+npm run dev
+# App runs on http://localhost:3000 (default)
+```
+
+Access:
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:4001
+- API Docs: http://localhost:4001/docs
+- Swagger UI: http://localhost:4001/docs
 
 ## Features
 
-- Upload PDF (server-side parsing with pdf-parse)
-- ATS scoring: keywords, structure, formatting, language
-- Keyword match against job description
-- Actionable issues, suggestions, and formatting tips
-- Clean, responsive Bootstrap UI
+- **Resume Upload**: PDF parsing with server-side extraction
+- **ATS Scoring**: Keywords, structure, formatting, language quality (0–100)
+- **Keyword Match**: Compare resume against job descriptions
+- **Actionable Insights**: Issues, suggestions, and formatting tips
+- **Clerk Authentication**: Sign-in/up with email or Google OAuth
+- **Responsive UI**: Next.js + Tailwind CSS
+- **Secure Persistence**: MongoDB Atlas (primary), Postgres (optional), JSON fallback
+
+## Authentication
+
+Configure Clerk:
+
+1. Create a free Clerk account at https://clerk.com
+2. Create an application and get your publishable + secret keys
+3. Add keys to `frontend/.env.local` and `backend/.env`
+4. Enable Google OAuth in Clerk dashboard if desired
 
 ## Configuration
 
-Create `backend/.env` (see `backend/.env.example`):
+### Backend (.env)
 
+```env
+PORT=4001
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Database
+MONGODB_URI=mongodb+srv://...
+MONGODB_DB=ai_resume_analyzer
+DATABASE_URL=postgresql://...
+
+# Clerk Auth
+CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
 ```
-# Networking
-PORT=4000
-CORS_ORIGINS=http://localhost:4000,http://localhost:3000,http://localhost:5173
 
-# Primary datastore (optional; falls back to JSON via lowdb)
-MONGODB_URI=
-MONGODB_DB=
+### Frontend (.env.local)
 
-# Optional Postgres fallback
-DATABASE_URL=
-
-# Optional APIs
-OPENAI_API_KEY=
-LANGUAGETOOL_API_URL=https://api.languagetool.org/v2
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_API_URL=http://localhost:4001
 ```
+
+## Deployment
+
+### Vercel (Frontend)
+
+```bash
+cd frontend
+vercel deploy
+```
+
+### Render / Railway (Backend)
+
+Use `render.yaml` preset or configure manually:
+
+- Set `PORT=4001`
+- Configure MongoDB Atlas or Postgres connection string
+- Set Clerk keys
+
+## Tech Stack
+
+- **Backend**: Node.js, Express, pdf-parse, pino (logging), mongodb/pg (optional)
+- **Frontend**: Next.js 14, React, Tailwind CSS, Clerk
+- **Auth**: Clerk (email + OAuth)
+- **Hosting**: Vercel (frontend), Render/Railway (backend)
 
 ## Notes
 
 - Request logging via pino; centralized error handling
-- Persists a small analysis summary to MongoDB (if configured), else Postgres, else local JSON (`backend/data/analyses.json`)
-- Swagger UI served from `backend/openapi.json` at `/docs`
+- Analysis summary persisted: MongoDB → Postgres → JSON fallback
+- Swagger/OpenAPI docs at `http://localhost:4001/docs`
+- Frontend gated by Clerk auth when keys are present
 
 ## Roadmap
 
-- Optional grammar checks (LanguageTool)
-- Optional LLM-assisted recommendations (OpenAI)
-- Deployment presets (Render/Railway) using `render.yaml`
+- Optional grammar checks (LanguageTool API)
+- LLM-assisted recommendations (OpenAI integration)
+- User dashboard with analysis history
+- Resume templates and best practices

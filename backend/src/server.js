@@ -30,6 +30,10 @@ const defaultOrigins = [
   'http://127.0.0.1:3000',
   'http://localhost:4000',
   'http://127.0.0.1:4000',
+  'http://localhost:4001',
+  'http://127.0.0.1:4001',
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
 ];
 const envOrigins = (process.env.CORS_ORIGINS || '')
   .split(',')
@@ -56,11 +60,13 @@ if (hasClerk) {
   );
 }
 
-// Serve static frontend
+// Serve static frontend (if built)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendPath = path.resolve(process.cwd(), '../frontend');
-app.use(express.static(frontendPath));
+const frontendPath = path.resolve(process.cwd(), '../frontend/.next/static');
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+}
 
 // Swagger UI
 try {
@@ -80,9 +86,14 @@ app.get('/config/public', (_req, res) => {
   });
 });
 
-// Serve index.html on root for convenience
+// Serve index.html on root for convenience (if built frontend exists)
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  const indexPath = path.join(frontendPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({ message: 'API running. Frontend served separately on http://localhost:3000' });
+  }
 });
 
 const analyzeMiddlewares = [];
@@ -147,5 +158,5 @@ app.use((err, _req, res, _next) => {
 await initDb();
 app.listen(PORT, '0.0.0.0', () => {
   logger.info(`AI Resume Analyzer backend listening on http://localhost:${PORT}`);
-  logger.info(`Serving frontend from: ${frontendPath}`);
+  logger.info('Frontend: http://localhost:3000 (Next.js, served separately)');
 });
